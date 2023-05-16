@@ -9,3 +9,8 @@ EXEC sp_configure 'cost threshold for parallelism', 1000;
 GO
 RECONFIGURE
 GO
+
+-- Set compatibility level to 150
+-- New compatibility levels mess up some of these examples!
+ALTER DATABASE StackOverflow
+SET COMPATIBILITY_LEVEL = 150

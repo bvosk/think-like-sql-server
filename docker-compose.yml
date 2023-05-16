@@ -1,0 +1,26 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    env_file:
+      - .env
+    ports:
+      - 1433:1433
+    volumes:
+      - ./StackOverflow2010:/StackOverflow2010
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "${MSSQL_SA_PASSWORD}" -Q "SELECT 1" -b -o /dev/null
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+  init:
+    image: mcr.microsoft.com/mssql-tools
+    environment:
+      MSSQL_SERVER: mssql
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    depends_on:
+      mssql:
+        condition: service_healthy
+    entrypoint: /scripts/init_db.sh
+    volumes:
+      - ./scripts:/scripts

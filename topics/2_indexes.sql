@@ -22,3 +22,6 @@ SELECT Id
 FROM dbo.Users
 WHERE LastAccessDate > '1800/07/01'
 ORDER BY LastAccessDate;
+
+SELECT TOP 10 *
+FROM dbo.Users;
